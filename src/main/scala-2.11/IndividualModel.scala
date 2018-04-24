@@ -7,6 +7,6 @@ abstract class IndividualModel {
   def model: M
   def trainPredictions: DataFrame
   def testPredictions: DataFrame
-  def predict: DataFrame
+  def predict(df: DataFrame): DataFrame
 
 }
