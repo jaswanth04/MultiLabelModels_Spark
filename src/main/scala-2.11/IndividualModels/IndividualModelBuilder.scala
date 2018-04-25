@@ -1,5 +1,8 @@
+package IndividualModels
+
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.functions.col
+
 
 abstract class IndividualModelBuilder {
 
