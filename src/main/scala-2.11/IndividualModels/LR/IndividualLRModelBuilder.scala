@@ -1,22 +1,24 @@
 package IndividualModels.LR
 
 import IndividualModels.IndividualModelBuilder
-import org.apache.spark.ml.classification.LogisticRegression
+import org.apache.spark.ml.classification.{LogisticRegression, LogisticRegressionModel}
 import org.apache.spark.sql.DataFrame
 
-class IndividualLRModelBuilder(trainData: DataFrame,
+class IndividualLRModelBuilder(trainDf: DataFrame,
                                vectorizedFeatureColName: String,
                                responseColName: String,
                                reqColsInPredictions: Seq[String] = Seq(),
                                maxIterations: Int = 100,
                                regularizationParameter: Double = 0.0,
                                elasticNetParameter: Double = 0.0,
-                               testData:DataFrame) extends IndividualModelBuilder {
+                               testDf:DataFrame) extends
+  IndividualModelBuilder[LogisticRegressionModel, LogisticRegression](featureColName = vectorizedFeatureColName,
+    trainDf = trainDf,
+    testDf = testDf,
+    responseColName = responseColName) {
 
-  val responseColumnName: String = responseColName
-  val predictionCols: List[String] = List("prediction", "probability", "rawPrediction").map(responseColumnName ++ "_" ++ _)
-  val vectorizedFeatureColumnName: String = vectorizedFeatureColName
   val learnerName = "LogisticRegression"
+  override val reqCols: Seq[String] = reqColsInPredictions
 
   println(s"Building model for the feature: $vectorizedFeatureColumnName")
 
@@ -35,6 +37,7 @@ class IndividualLRModelBuilder(trainData: DataFrame,
 
   def buildModel: IndividualLRModel = new IndividualLRModel(lrModel = learner.fit(trainData),
     testData = testData,
+    trainData = trainData,
     reqColsInPrediction = this.reqColsInPredictions)
 
 }

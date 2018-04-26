@@ -4,7 +4,7 @@
 		module="multilabelmodels_spark$sources"
 		revision="1.0"
 		status="integration"
-		publication="20180425161746"
+		publication="20180426161021"
 	/>
 	<configurations>
 		<conf name="compile" visibility="public" description=""/>
