@@ -22,7 +22,7 @@ object IndModelTrial {
 
     val (trainDf, testDf) = splitTrainTest(vectorizedDf)
 
-    val iModel = new IndividualModels.LR.IndividualLRModelBuilder(trainDf = trainDf,
+    val iModel = new Individual.LR.IndividualLRModelBuilder(trainDf = trainDf,
       vectorizedFeatureColName = "features",
       responseColName = y_flag,
       testDf = testDf)

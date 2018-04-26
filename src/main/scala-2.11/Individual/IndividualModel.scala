@@ -1,4 +1,4 @@
-package IndividualModels
+package Individual
 
 //import org.apache.spark.ml.classification.ClassificationModel
 import org.apache.spark.ml.linalg.Vector
