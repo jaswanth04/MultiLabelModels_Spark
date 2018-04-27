@@ -1,6 +1,6 @@
-package MultiLabel
+package multilabel
 
-import Individual.{IndividualModel, IndividualModelBuilder}
+import individual.{IndividualModel, IndividualModelBuilder}
 import org.apache.spark.ml.classification.{ClassificationModel, Classifier}
 import org.apache.spark.ml.feature.VectorAssembler
 import org.apache.spark.sql.DataFrame

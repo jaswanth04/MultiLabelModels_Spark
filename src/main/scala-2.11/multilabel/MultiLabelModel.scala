@@ -1,6 +1,6 @@
-package MultiLabel
+package multilabel
 
-import Individual.IndividualModel
+import individual.IndividualModel
 import org.apache.spark.ml.classification.ClassificationModel
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.ml.linalg.Vector

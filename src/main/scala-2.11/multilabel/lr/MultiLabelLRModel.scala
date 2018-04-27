@@ -1,7 +1,7 @@
-package MultiLabel.LR
+package multilabel.lr
 
-import Individual.LR.IndividualLRModel
-import MultiLabel.MultiLabelModel
+import individual.lr.IndividualLRModel
+import multilabel.MultiLabelModel
 import org.apache.spark.ml.classification.LogisticRegressionModel
 import org.apache.spark.sql.DataFrame
 

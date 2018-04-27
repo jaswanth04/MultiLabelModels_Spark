@@ -1,4 +1,4 @@
-package Individual
+package individual
 
 import org.apache.spark.ml.classification.{ClassificationModel, Classifier}
 import org.apache.spark.sql.DataFrame
