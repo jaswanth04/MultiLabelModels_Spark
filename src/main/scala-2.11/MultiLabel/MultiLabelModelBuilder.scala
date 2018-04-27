@@ -1,11 +1,16 @@
 package MultiLabel
 
 import Individual.{IndividualModel, IndividualModelBuilder}
+import org.apache.spark.ml.classification.{ClassificationModel, Classifier}
 import org.apache.spark.ml.feature.VectorAssembler
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.functions.col
+import org.apache.spark.ml.linalg.Vector
 
-abstract class MultiLabelModelBuilder[M ,L ,+IL <: IndividualModelBuilder[M, L], IM <: IndividualModel[M]]{
+abstract class MultiLabelModelBuilder[M <: ClassificationModel[Vector, M],
+L <: Classifier[Vector, L, M],
++IL <: IndividualModelBuilder[M, L],
++IM <: IndividualModel[M]]{
 
   def buildIndividualLearners(trainDf: DataFrame,
                               testDf: DataFrame,
@@ -26,6 +31,7 @@ abstract class MultiLabelModelBuilder[M ,L ,+IL <: IndividualModelBuilder[M, L],
   def createFeatureVectorDF(df: DataFrame, requiredColumnNames: Seq[String]): DataFrame = {
     println("Combing features into a vector column:  " + vectorizedFeatureColName)
     val modifiedDf = vectorizeDf(df, this.featureColumnNames, this.vectorizedFeatureColName)
+//    modifiedDf.show()
     val reqCols = requiredColumnNames ++ Seq(vectorizedFeatureColName) ++ responseColumnNames
     modifiedDf.select(reqCols.map(col): _*)
   }
@@ -33,7 +39,7 @@ abstract class MultiLabelModelBuilder[M ,L ,+IL <: IndividualModelBuilder[M, L],
   def buildBinaryRelevanceModels(trainDf: DataFrame,
                                  testDf: DataFrame,
                                  responseColumns: Seq[String],
-                                 modelList: List[IndividualModel[M]]): List[IndividualModel[M]] = responseColumns match {
+                                 modelList: List[IndividualModel[M]] = List()): List[IndividualModel[M]] = responseColumns match {
     case Seq() => modelList
     case head :: tail =>
       val learner: IL = buildIndividualLearners(trainDf, testDf, head, this.vectorizedFeatureColName)
@@ -50,7 +56,7 @@ abstract class MultiLabelModelBuilder[M ,L ,+IL <: IndividualModelBuilder[M, L],
                                  testDf: DataFrame,
                                  responseColumns: Seq[String],
                                  vectorizedFeatureName: String,
-                                 modelList: List[IndividualModel[M]]): List[IndividualModel[M]] = responseColumns match {
+                                 modelList: List[IndividualModel[M]] = List()): List[IndividualModel[M]] = responseColumns match {
     case Seq() => modelList
     case head :: tail =>
       val learner: IL = buildIndividualLearners(trainDf, testDf, head, vectorizedFeatureColName)

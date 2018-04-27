@@ -1,7 +1,7 @@
 package Individual.LR
 
 import Individual.IndividualModel
-import org.apache.spark.ml.classification.{LogisticRegressionModel, LogisticRegressionTrainingSummary}
+import org.apache.spark.ml.classification.LogisticRegressionModel
 import org.apache.spark.ml.linalg
 import org.apache.spark.sql.DataFrame
 
