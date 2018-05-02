@@ -4,7 +4,7 @@
 		module="multilabelmodels_spark_2.11"
 		revision="1.0"
 		status="integration"
-		publication="20180423171951"
+		publication="20180502123632"
 	>
 		<description>
 		MultiLabelModels_Spark

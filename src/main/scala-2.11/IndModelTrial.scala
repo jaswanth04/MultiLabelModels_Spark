@@ -1,3 +1,4 @@
+import dataloader.FullTableData
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.ml.feature.VectorAssembler

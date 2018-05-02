@@ -1,6 +1,8 @@
+package dataloader
+
 import org.apache.spark.sql.DataFrame
 
-abstract class dataLoader {
+abstract class DataLoader {
 
   def dataDf: DataFrame
   def getFinalDf: DataFrame

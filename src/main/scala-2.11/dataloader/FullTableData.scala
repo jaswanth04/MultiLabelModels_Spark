@@ -1,10 +1,12 @@
-import org.apache.spark.sql.{DataFrame, SparkSession}
+package dataloader
+
 import org.apache.spark.sql.functions.col
+import org.apache.spark.sql.{DataFrame, SparkSession}
 
 class FullTableData(fileName: String,
                     spark: SparkSession,
                     xIgnoreCols: Seq[String] = Seq(),
-                    yIgnoreCols: Seq[String] = Seq()) extends dataLoader {
+                    yIgnoreCols: Seq[String] = Seq()) extends DataLoader {
 
   val dataDf: DataFrame = spark.read.option("header","true").option("inferSchema","true").csv(fileName)
 

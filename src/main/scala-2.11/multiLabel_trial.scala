@@ -1,3 +1,4 @@
+import dataloader.FullTableData
 import multilabel.lr.MultiLabelLRModelBuilder
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql.{DataFrame, SparkSession}
