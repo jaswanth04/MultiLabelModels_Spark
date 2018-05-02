@@ -32,6 +32,9 @@ object IndModelTrial {
 
     fiModel.trainPredictions.show()
     fiModel.testPredictions.show()
+
+    println(fiModel.trainMetrics)
+    println(fiModel.testMetrics)
   }
 
 }

@@ -26,4 +26,14 @@ trait IndividualModelEvaluation {
   def recall(cf: ConfusionMatrix): Double = cf.truePositives.toDouble/(cf.truePositives + cf.falseNegatives)
   def f1(cf: ConfusionMatrix): Double = 2*recall(cf)*precision(cf)/(recall(cf) + precision(cf))
 
+  def getIndividualModelMetrics(df: DataFrame,
+                                actualColumnName: String,
+                                predictedColumnName: String): IndividualModelMetrics = {
+    val cf = evaluate(df, actualColumnName, predictedColumnName)
+    IndividualModelMetrics(accuracy = accuracy(cf),
+      precision = precision(cf),
+      recall = recall(cf),
+      f1 = f1(cf))
+  }
+
 }
