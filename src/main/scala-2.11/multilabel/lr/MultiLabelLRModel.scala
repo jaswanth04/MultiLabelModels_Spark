@@ -12,7 +12,7 @@ class MultiLabelLRModel(modelList: List[IndividualLRModel],
   IndividualLRModel](modelList = modelList,
   trainDf = trainDf,
   testDf = testDf,
-  reqCols = reqCols) {
+  reqCols = reqCols)  {
 
   val learnerName = "LogisticRegression"
 

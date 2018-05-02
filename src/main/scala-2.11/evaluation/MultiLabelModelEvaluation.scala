@@ -23,7 +23,7 @@ trait MultiLabelModelEvaluation {
     val mod_yAndyhat = udf((a: Vector, b: Vector) => a.toArray.map(_.toInt).zip(b.toArray.map(_.toInt)).map(x=> x._1 & x._2).sum)
     val mod_yOryhat = udf((a: Vector, b: Vector) => a.toArray.map(_.toInt).zip(b.toArray.map(_.toInt)).map(x=> x._1 | x._2).sum)
     val mod = udf((a:Vector) => a.toArray.sum)
-    val correctPredictionCount = udf((a: Vector, b: Vector) => a.toArray.zip(b.toArray).map(x => x._1 == x._2).count(_))
+    val correctPredictionCount = udf((a: Vector, b: Vector) => a.toArray.zip(b.toArray).map(x => x._1 == x._2).count(x => x))
     val div = udf((a:Int, b: Double) => if (a == 0) 0 else a/b)
 
     val modifiedDf = vectorizedDf.withColumn("mod_yAndyhat", mod_yAndyhat(col("flagVector"), col("flagVector_prediction")))
@@ -34,7 +34,7 @@ trait MultiLabelModelEvaluation {
 
     val calcDf = modifiedDf.withColumn("yAndyHat_by_yOryHat", div(modifiedDf("mod_yAndyhat"), modifiedDf("mod_yOryhat")))
       .withColumn("yAndyHat_by_yHat", div(modifiedDf("mod_yAndyhat"),modifiedDf("mod_yHat")))
-      .withColumn("yAndyHat_by_y", div(modifiedDf("modyAndyhat"), modifiedDf("mod_y")))
+      .withColumn("yAndyHat_by_y", div(modifiedDf("mod_yAndyhat"), modifiedDf("mod_y")))
       .withColumn("yAndyHat_by_y_plus_yHat", div(modifiedDf("mod_yAndyhat"), modifiedDf("mod_yHat") + modifiedDf("mod_y")))
 
     val requiredColumnsToSum = List("yAndyHat_by_yOryHat", "yAndyHat_by_yHat", "yAndyHat_by_y", "yAndyHat_by_y_plus_yHat", "correctPredictionCount")

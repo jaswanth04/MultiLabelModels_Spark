@@ -1,6 +1,7 @@
 package multilabel
 
 import individual.IndividualModel
+import evaluation.{MultiLabelMetrics, MultiLabelModelEvaluation}
 import org.apache.spark.ml.classification.ClassificationModel
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.ml.linalg.Vector
@@ -8,7 +9,7 @@ import org.apache.spark.ml.linalg.Vector
 abstract class MultiLabelModel[M <: ClassificationModel[Vector, M], +IM <: IndividualModel[M]](modelList: List[IndividualModel[M]],
                                                                                     trainDf: DataFrame,
                                                                                     testDf: DataFrame,
-                                                                                    reqCols: Seq[String]) {
+                                                                                    reqCols: Seq[String]) extends MultiLabelModelEvaluation {
 
   def learnerName: String
   val models: List[IndividualModel[M]] = modelList
@@ -24,5 +25,8 @@ abstract class MultiLabelModel[M <: ClassificationModel[Vector, M], +IM <: Indiv
   }
   def trainPredictions: DataFrame = this.predict(trainDf)
   def testPredictions: DataFrame = this.predict(testDf)
+
+  def trainPerformance: MultiLabelMetrics = getEvaluationMetrics(trainPredictions, this.responseCols)
+  def testPerformance: MultiLabelMetrics = getEvaluationMetrics(testPredictions, this.responseCols)
 
 }

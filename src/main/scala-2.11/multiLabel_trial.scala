@@ -30,5 +30,8 @@ object multiLabel_trial {
     mlModel.trainPredictions.show()
     mlModel.testPredictions.show()
 
+    println(mlModel.testPerformance)
+    println(mlModel.trainPerformance)
+
   }
 }
