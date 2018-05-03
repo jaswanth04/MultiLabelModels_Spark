@@ -23,7 +23,16 @@ object IndModelTrial {
 
     val (trainDf, testDf) = splitTrainTest(vectorizedDf)
 
+    /*
+    // Trial of Individual LR Model
     val iModel = new individual.lr.IndividualLRModelBuilder(trainDf = trainDf,
+      vectorizedFeatureColName = "features",
+      responseColName = y_flag,
+      testDf = testDf)
+*/
+
+    // Trial of Individual DT Model
+    val iModel = new individual.dt.IndividualDTModelBuilder(trainDf = trainDf,
       vectorizedFeatureColName = "features",
       responseColName = y_flag,
       testDf = testDf)
