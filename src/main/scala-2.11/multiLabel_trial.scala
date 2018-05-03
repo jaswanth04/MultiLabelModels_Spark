@@ -1,6 +1,7 @@
 import dataloader.FullTableData
 import multilabel.dt.MultiLabelDTModelBuilder
 import multilabel.lr.MultiLabelLRModelBuilder
+import multilabel.lsvc.MultiLabelLSVCModelBuilder
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
@@ -28,15 +29,25 @@ object multiLabel_trial {
       reqColsInPrediction = List("vcaccountnumber","filedt"))
 */
 
+    /*
     // MultiLabel DT Model
-
     val mlModelMaker = new MultiLabelDTModelBuilder(data = dataDf,
       xFlagNames = x_flags,
       responseColumns = y_flags,
       trainTestSplitFunc = splitTrainTest,
       reqColsInPrediction = List("vcaccountnumber","filedt"))
-    val mlModel = mlModelMaker.buildMultiLabelModels("CC")
 
+*/
+
+    dataDf.cache()
+    //Multi Label LSVC Model
+    val mlModelMaker = new MultiLabelLSVCModelBuilder(data = dataDf,
+      xFlagNames = x_flags,
+      responseColumns = y_flags,
+      trainTestSplitFunc = splitTrainTest,
+      reqColsInPrediction = List("vcaccountnumber","filedt"))
+
+    val mlModel = mlModelMaker.buildMultiLabelModels("BR")
     mlModel.trainPredictions.show()
     mlModel.testPredictions.show()
 
