@@ -20,10 +20,10 @@ class IndividualLRModelBuilder(trainDf: DataFrame,
   val learnerName = "LogisticRegression"
   override val reqCols: Seq[String] = reqColsInPredictions
 
-  println(s"Building model for the feature: $vectorizedFeatureColumnName")
+  println(s"Building model for the feature: $vectorizedFeatureColName")
 
   def learner: LogisticRegression = new LogisticRegression()
-    .setFeaturesCol(vectorizedFeatureColumnName)
+    .setFeaturesCol(vectorizedFeatureColName)
     .setLabelCol(responseColumnName)
     .setMaxIter(maxIterations)
     .setRegParam(regularizationParameter)

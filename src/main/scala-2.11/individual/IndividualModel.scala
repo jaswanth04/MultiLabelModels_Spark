@@ -13,6 +13,7 @@ abstract class IndividualModel[M <: ClassificationModel[Vector, M]](model: M,
   def learnerName: String
   val indModel: M = model
   val responseColName: String = indModel.getLabelCol
+  val featureName: String = indModel.getFeaturesCol
   def predict(df: DataFrame): DataFrame = indModel.transform(df)
   def trainPredictions: DataFrame = this.predict(trainData)
   def testPredictions: DataFrame = this.predict(testData)

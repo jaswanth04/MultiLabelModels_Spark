@@ -28,12 +28,11 @@ extends MultiLabelModelBuilder[LogisticRegressionModel,
   val (trainData, testData) = trainTestSplitFunc(vectorizedDf)
 
   def buildIndividualLearners(trainDf: DataFrame,
-  testDf: DataFrame,
-  responseColName: String,
-  featureColName: String): IndividualLRModelBuilder = new IndividualLRModelBuilder(trainDf = trainDf,
-    testDf = testDf,
+                              responseColName: String,
+                              featureColumnName: String): IndividualLRModelBuilder = new IndividualLRModelBuilder(trainDf = trainDf,
+    testDf = this.testData,
     responseColName = responseColName,
-    vectorizedFeatureColName = featureColName,
+    vectorizedFeatureColName = featureColumnName,
     reqColsInPredictions = reqColsInPrediction,
     maxIterations = maxIterations,
     regularizationParameter = regularizationParameter,
@@ -42,18 +41,18 @@ extends MultiLabelModelBuilder[LogisticRegressionModel,
   def buildMultiLabelModels(multiLabelAlgorithm: String): MultiLabelLRModel = {
     if (multiLabelAlgorithm == "BR") {
       val brModels = buildBinaryRelevanceModels(trainDf = trainData,
-        testDf = testData,
         responseColumns = responseColumnNames)
       new MultiLabelLRModel(modelList = brModels.map(_.asInstanceOf[IndividualLRModel]),
+        modelType = "BR",
       trainDf = trainData,
       testDf = testData,
       reqCols = reqColsInPrediction)}
     else {
       val ccModels = buildClassifierChainModels(trainDf = trainData,
-        testDf = testData,
         responseColumns = responseColumnNames,
         vectorizedFeatureName = vectorizedFeatureColName)
       new MultiLabelLRModel(modelList = ccModels.map(_.asInstanceOf[IndividualLRModel]),
+        modelType = "CC",
       trainDf = trainData,
       testDf = testData,
       reqCols = reqColsInPrediction)}

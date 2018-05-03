@@ -13,7 +13,6 @@ L <: Classifier[Vector, L, M],
 +IM <: IndividualModel[M]]{
 
   def buildIndividualLearners(trainDf: DataFrame,
-                              testDf: DataFrame,
                               responseColName: String,
                               vectorizedFeatureColName: String): IL
   def featureColumnNames: Seq[String]
@@ -37,15 +36,13 @@ L <: Classifier[Vector, L, M],
   }
 
   def buildBinaryRelevanceModels(trainDf: DataFrame,
-                                 testDf: DataFrame,
                                  responseColumns: Seq[String],
                                  modelList: List[IndividualModel[M]] = List()): List[IndividualModel[M]] = responseColumns match {
     case Seq() => modelList
     case head :: tail =>
-      val learner: IL = buildIndividualLearners(trainDf, testDf, head, this.vectorizedFeatureColName)
+      val learner: IL = buildIndividualLearners(trainDf, head, this.vectorizedFeatureColName)
       val model: IndividualModel[M] = learner.buildModel
-      buildBinaryRelevanceModels(trainDf = model.trainPredictions,
-        testDf = model.testPredictions,
+      buildBinaryRelevanceModels(trainDf = trainDf,
         responseColumns = tail,
         modelList = modelList ++ List(model))
 
@@ -53,19 +50,17 @@ L <: Classifier[Vector, L, M],
   }
 
   def buildClassifierChainModels(trainDf: DataFrame,
-                                 testDf: DataFrame,
                                  responseColumns: Seq[String],
                                  vectorizedFeatureName: String,
                                  modelList: List[IndividualModel[M]] = List()): List[IndividualModel[M]] = responseColumns match {
     case Seq() => modelList
     case head :: tail =>
-      val learner: IL = buildIndividualLearners(trainDf, testDf, head, vectorizedFeatureColName)
+      val learner: IL = buildIndividualLearners(trainDf, head, vectorizedFeatureName)
       val model: IndividualModel[M] = learner.buildModel
       val vecAss = new VectorAssembler()
         .setInputCols(Array(vectorizedFeatureName, head ++ "_prediction"))
         .setOutputCol("feature_" ++ head)
       buildClassifierChainModels(trainDf = vecAss.transform(model.trainPredictions).drop(vectorizedFeatureName).persist(),
-        testDf = vecAss.transform(model.testPredictions).drop(vectorizedFeatureName).persist(),
         responseColumns = tail,
         vectorizedFeatureName = "feature_" ++ head,
         modelList = modelList ++ List(model))
