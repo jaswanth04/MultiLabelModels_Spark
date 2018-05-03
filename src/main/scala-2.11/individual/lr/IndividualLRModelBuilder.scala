@@ -22,8 +22,6 @@ class IndividualLRModelBuilder(trainDf: DataFrame,
 
   println(s"Building model for the feature: $vectorizedFeatureColumnName")
 
-  type L = LogisticRegression
-
   def learner: LogisticRegression = new LogisticRegression()
     .setFeaturesCol(vectorizedFeatureColumnName)
     .setLabelCol(responseColumnName)
