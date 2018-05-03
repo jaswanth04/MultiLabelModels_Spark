@@ -22,6 +22,8 @@ object IndModelTrial {
     def splitTrainTest(df: DataFrame): (DataFrame, DataFrame) = (df.filter(df("filedt") === 201701), df.filter(df("filedt") === 201702))
 
     val (trainDf, testDf) = splitTrainTest(vectorizedDf)
+    trainDf.cache()
+    testDf.cache()
 
     /*
     // Trial of Individual LR Model
@@ -30,13 +32,19 @@ object IndModelTrial {
       responseColName = y_flag,
       testDf = testDf)
 */
-
+/*
     // Trial of Individual DT Model
     val iModel = new individual.dt.IndividualDTModelBuilder(trainDf = trainDf,
       vectorizedFeatureColName = "features",
       responseColName = y_flag,
       testDf = testDf)
+*/
 
+    //Trial of Individual LSVC Model
+    val iModel = new individual.lsvc.IndividualLSVCModelBuilder(trainDf = trainDf,
+      vectorizedFeatureColName = "features",
+      responseColName = y_flag,
+      testDf = testDf)
     val fiModel = iModel.buildModel
 
     fiModel.trainPredictions.show()
