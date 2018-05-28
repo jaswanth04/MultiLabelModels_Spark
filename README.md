@@ -15,3 +15,4 @@ Also, the following are the evaluations of Multi Label Models:
 5. Precision
 6. Recall
 
+Please look at the src/scala-2.11/*trial.scala files on details about how to use the files.  
